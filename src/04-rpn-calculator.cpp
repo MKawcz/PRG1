@@ -43,6 +43,17 @@ auto evaluate_subtraction(std::stack<double>& stack) -> void
 }
 
 
+auto evaluate_multiplication(std::stack<double>& stack) -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for *"};
+    }
+    auto const b = pop_top(stack);
+    auto const a = pop_top(stack);
+    stack.push(a * b);
+}
+
+
 auto make_args(int argc, char* argv[]) -> std::vector<std::string>
 {
     auto args = std::vector<std::string>{};
@@ -63,6 +74,8 @@ auto main(int argc, char* argv[]) -> int
                 evaluate_addition(stack);
             } else if (each == "-") {
                 evaluate_subtraction(stack);
+            } else if (each == "*") {
+                evaluate_multiplication(stack);
             } else {
                 stack.push(std::stod(each));
             }

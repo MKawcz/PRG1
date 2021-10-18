@@ -1,30 +1,24 @@
 #include <iostream>
 #include <string>
-auto ask_user_for_integer ( std :: string const prompt ) -> int
+auto ask_user_for_integer(std ::string const prompt) -> int
 {
-if ( not prompt . empty ()) {
-std :: cout << prompt ;
+    if (not prompt.empty()) {
+        std ::cout << prompt;
+    }
+    auto value = std ::string{};
+    std ::getline(std ::cin, value);
+    return std ::stoi(value);
 }
-auto value = std :: string {};
-std :: getline ( std :: cin , value );
-return std :: stoi ( value );
-}
-auto main() ->int
+auto main() -> int
 {
-        auto const a = ask_user_for_integer("a = ");
-        auto const b = ask_user_for_integer("b = ");
-	if(a==b)
-	{
-        std::cout <<a<<" == "<<b<< "\n";
-	}
-	else if(a>b)
-	{
-	std::cout <<a<<" > "<<b <<"\n";
-	}
-	else
-	{
-	std::cout <<a<<" < "<<b <<"\n";
-	}
-        return 0;
+    auto const a = ask_user_for_integer("a = ");
+    auto const b = ask_user_for_integer("b = ");
+    if (a == b) {
+        std::cout << a << " == " << b << "\n";
+    } else if (a > b) {
+        std::cout << a << " > " << b << "\n";
+    } else {
+        std::cout << a << " < " << b << "\n";
+    }
+    return 0;
 }
-

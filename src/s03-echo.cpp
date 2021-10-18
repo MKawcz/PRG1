@@ -3,8 +3,20 @@
 
 auto main(int argc, char* argv[]) -> int
 {
-    auto znak  = std::string{argv[1]};
-    auto znak2 = std::string{argv[2]};
+    std::string znak;
+    std::string znak2;
+
+    if (argc > 1) {
+        znak = std::string{argv[1]};
+    } else {
+        znak = " ";
+    }
+
+    if (argc > 2) {
+        znak2 = std::string{argv[2]};
+    } else {
+        znak2 = " ";
+    }
 
     if (((znak == "-r") && (znak2 == "-l"))
         || ((znak == "-l") && (znak2 == "-r"))) {
@@ -38,5 +50,6 @@ auto main(int argc, char* argv[]) -> int
         }
         std::cout << "\n";
     }
+
     return 0;
 }

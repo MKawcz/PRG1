@@ -1,0 +1,21 @@
+#include <iostream>
+#include <string>
+
+auto main(int argc, char* argv[])->int
+{
+    if (argc == 0) {
+        return 1;
+    }
+
+
+    auto const liczba = std::stoi(argv[1]);
+
+    for(auto i=99; i>=0; i--)
+    {
+	if(i==0)
+        {
+         std::cout<<"No more bottles of beer on the wall, no more bottles of beer."<<"\n"<<"Go to the store and buy some more, 99 bottles of beer on the wall..."<<"\n";
+        }
+	else
+}
+

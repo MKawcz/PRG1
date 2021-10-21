@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+
+auto main(int argc, char* argv[]) -> int
+{
+    if (argc == 0) {
+        return 1;
+    }
+
+    auto znak=std::string{argv[1]}; 
+    
+
+   if(znak=="-r")
+   {
+     for(auto i=argc-1; i>=2; i--)
+     {
+  	std::cout<<argv[i]<<" ";
+     }
+  	std::cout<<"\n";
+   }
+   else if(znak=="-n")
+   {
+     for(auto i=argc-1; i>=2; i--)
+     {
+        std::cout<<argv[i]<<" ";
+     }
+        std::cout<<"\n";
+   }
+   else
+   {
+     for(auto j=1; j<=argc-1; j++)
+     {
+        std::cout<<argv[j]<<" ";
+     }
+        std::cout<<"\n";
+   }
+    return 0;
+}
+
+

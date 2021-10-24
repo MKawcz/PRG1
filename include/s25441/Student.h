@@ -13,9 +13,9 @@ struct Student {
     float srednia_ocen;
 
     auto to_string() const -> std::string;
-    Student(const std::string& imie,
-            const std::string& nazwisko,
-            const std::string& indeks,
+    Student(const std::string imie,
+            const std::string nazwisko,
+            const std::string indeks,
             short int semestr,
             float srednia_ocen);
 };

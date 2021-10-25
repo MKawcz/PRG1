@@ -8,11 +8,7 @@ Student::Student(const std::string im,
                  const std::string id,
                  short int sem,
                  float sr)
-        : imie{im}
-        , nazwisko{naz}
-        , indeks{id}
-        , semestr{sem}
-        , srednia_ocen{sr}
+        : imie{im}, nazwisko{naz}, indeks{id}, semestr{sem}, srednia_ocen{sr}
 {}
 
 auto ::Student::to_string() const -> std::string

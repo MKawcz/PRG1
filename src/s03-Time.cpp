@@ -1,10 +1,8 @@
 #include <s25441/Time.h>
 
-#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <string>
-#include <thread>
 
 Time::Time(int godz, int min, int sek)
         : godzina{godz}, minuta{min}, sekunda{sek}
@@ -62,43 +60,56 @@ auto ::Time::to_string() const -> std::string
     return godz + ":" + min + ":" + sek;
 }
 
+
 auto ::Time::time_of_day() const -> Time_of_day
 {
-    if ((godzina >= 23) && (godzina <= 5)) {
-        return Noc;
+    if ((godzina == 23) || ((godzina >= 0) && (godzina <= 5))) {
+        return Time_of_day::Noc;
     } else if ((godzina >= 6) && (godzina <= 10)) {
-        return Rano;
+        return Time_of_day::Rano;
     } else if ((godzina >= 11) && (godzina <= 16)) {
-        return Dzien;
+        return Time_of_day::Dzien;
     } else if ((godzina >= 17) && (godzina <= 22)) {
-        return Wieczor;
+        return Time_of_day::Wieczor;
+    } else {
+        return Time_of_day::Niezdefiniowany;
     }
 }
 
-enum class Time_of_day {
-    Rano,
-    Dzien,
-    Wieczor,
-    Noc
-
-};
-
-auto to_string(Time_of_day t) -> std::string
+auto ::Time::to_string(Time_of_day t) -> std::string
 {
-    if (Time_of_day == Rano) {
-        cout << "Rano";
+    if (t == Time_of_day::Rano) {
+        return "Rano";
+    } else if (t == Time_of_day::Dzien) {
+        return "Dzien";
+    } else if (t == Time_of_day::Wieczor) {
+        return "Wieczor";
+    } else if (t == Time_of_day::Noc) {
+        return "Noc";
+    } else {
+        return "Niezdefiniowany";
     }
 }
 
 auto main() -> int
 {
-    auto czas = Time(23, 59, 59);
+    auto czas  = Time(23, 59, 59);
+    auto czas2 = Time(10, 46, 1);
+
     std::cout << czas.to_string() << std::endl;
+    std::cout << czas.to_string(czas.time_of_day()) << std::endl;
+
     czas.next_minute();
+
     std::cout << czas.to_string() << std::endl;
     czas.next_second();
     std::cout << czas.to_string() << std::endl;
     czas.next_hour();
     std::cout << czas.to_string() << std::endl;
+
+    std::cout << czas2.to_string() << std::endl;
+
+    std::cout << czas2.to_string(czas2.time_of_day()) << std::endl;
+
     return 0;
 }

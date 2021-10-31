@@ -17,5 +17,17 @@ struct Time {
     auto time_of_day() const -> Time_of_day;
     auto to_string(Time_of_day) -> std::string;
 
+    auto operator+(Time const&) const -> Time;
+    auto operator-(Time const&) const -> Time;
+    auto operator<(Time const&) const -> bool;
+    auto operator>(Time const&) const -> bool;
+    auto operator==(Time const&) const -> bool;
+    auto operator!=(Time const&) const -> bool;
+
+    auto count_seconds() const -> uint64_t;
+    auto count_minutes() const -> uint64_t;
+    auto time_to_midnight() const -> Time;
+
+
     Time(int godzina, int minuta, int sekunda);
 };

@@ -2,27 +2,20 @@
 #include <string>
 
 
-struct liczby {
-    int x;
-
-    void pokaz_wartosc()
+struct random_struct {
+    void wskaznik()
     {
-        std::cout << x << std::endl;
-    }
-
-    liczby(int x)
-    {
-        this->x = x;
+        std::cout << this << std::endl;
     }
 };
 
 auto main() -> int
 {
-    auto liczba = liczby(25);
+    random_struct cos;
 
-    liczba.pokaz_wartosc();
+    cos.wskaznik();
 
-    std::cout << &liczba << std::endl;
+    std::cout << &cos << std::endl;
 
     return 0;
 }

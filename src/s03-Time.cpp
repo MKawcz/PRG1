@@ -6,7 +6,30 @@
 
 Time::Time(int godz, int min, int sek)
         : godzina{godz}, minuta{min}, sekunda{sek}
-{}
+{
+    if (sekunda > 59) {
+        sekunda = sekunda - 60;
+        minuta++;
+    } else if (sekunda < 0) {
+        sekunda = 60 + sekunda;
+        minuta--;
+    }
+
+    if (minuta > 59) {
+        minuta = minuta - 60;
+        godzina++;
+    } else if (minuta < 0) {
+        minuta = 60 + minuta;
+        godzina--;
+    }
+
+
+    if (godzina > 23) {
+        godzina = godzina - 24;
+    } else if (godzina < 0) {
+        godzina = 24 + godzina;
+    }
+}
 
 auto ::Time::next_hour() -> void
 {
@@ -101,27 +124,27 @@ auto ::Time ::operator-(Time const& o) const -> Time
 {
     return Time(godzina - o.godzina, minuta - o.minuta, sekunda - o.sekunda);
 }
-/*
-auto :: Time :: operator> (Time const& o) const -> Time
+
+auto ::Time ::operator>(Time const& o) const -> bool
 {
-return Time(godzina + o.godzina, minuta + o.minuta, sekunda + o.sekunda);
+    return (godzina > o.godzina, minuta > o.minuta, sekunda > o.sekunda);
 }
 
-auto :: Time :: operator< (Time const& o) const -> Time
+auto ::Time ::operator<(Time const& o) const -> bool
 {
-return Time(godzina + o.godzina, minuta + o.minuta, sekunda + o.sekunda);
+    return (godzina < o.godzina, minuta < o.minuta, sekunda < o.sekunda);
 }
 
-auto :: Time :: operator== (Time const& o) const -> Time
+auto ::Time ::operator==(Time const& o) const -> bool
 {
-return Time(godzina + o.godzina, minuta + o.minuta, sekunda + o.sekunda);
+    return (godzina == o.godzina, minuta == o.minuta, sekunda == o.sekunda);
 }
 
-auto :: Time :: operator!= (Time const& o) const -> Time
+auto ::Time ::operator!=(Time const& o) const -> bool
 {
-return Time(godzina + o.godzina, minuta + o.minuta, sekunda + o.sekunda);
+    return (godzina != o.godzina, minuta != o.minuta, sekunda != o.sekunda);
 }
-*/
+
 
 auto ::Time ::count_seconds() const -> uint64_t
 {
@@ -142,11 +165,7 @@ auto ::Time ::count_minutes() const -> uint64_t
 
 auto ::Time ::time_to_midnight() const -> Time
 {
-    if (sekunda > 0) {
-        return Time(23 - godzina, 59 - minuta, (59 - sekunda) + 1);
-    } else {
-        return Time(23 - godzina, 60 - minuta, sekunda);
-    }
+    return Time(23 - godzina, 59 - minuta, 60 - sekunda);
 }
 
 
@@ -156,7 +175,7 @@ auto main() -> int
     auto czas2 = Time(10, 46, 1);
 
     std::cout << "pierwszy obiekt czasu: " << czas.to_string() << std::endl;
-    std::cout << "czas do polnocy: " << (czas.time_to_midnight()).to_string()
+    std::cout << "czas do polnocy: " << czas.time_to_midnight().to_string()
               << std::endl;
     std::cout << "pora dnia: " << czas.to_string(czas.time_of_day())
               << std::endl;
@@ -169,16 +188,19 @@ auto main() -> int
     std::cout << "kolejna sekunda: " << czas.to_string() << std::endl;
     czas.next_hour();
     std::cout << "kolejna godzina: " << czas.to_string() << std::endl;
-    std::cout << "czas do polnocy: " << (czas.time_to_midnight()).to_string()
+    std::cout << "czas do polnocy: " << czas.time_to_midnight().to_string()
               << std::endl;
 
     std::cout << "drugi obiekt czasu: " << czas2.to_string() << std::endl;
     std::cout << "pora dnia: " << czas2.to_string(czas2.time_of_day())
               << std::endl;
-    std::cout << "czas do polnocy: " << (czas2.time_to_midnight()).to_string()
+    std::cout << "czas do polnocy: " << czas2.time_to_midnight().to_string()
               << std::endl;
 
     std::cout << "dodawanie obu obiektów: " << (czas + czas2).to_string()
+              << std::endl;
+
+    std::cout << "odejmowanie obu obiektów: " << (czas - czas2).to_string()
               << std::endl;
 
     return 0;

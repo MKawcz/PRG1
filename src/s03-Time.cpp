@@ -127,22 +127,22 @@ auto ::Time ::operator-(Time const& o) const -> Time
 
 auto ::Time ::operator>(Time const& o) const -> bool
 {
-    return (godzina > o.godzina, minuta > o.minuta, sekunda > o.sekunda);
+    return (godzina > o.godzina && minuta > o.minuta && sekunda > o.sekunda);
 }
 
 auto ::Time ::operator<(Time const& o) const -> bool
 {
-    return (godzina < o.godzina, minuta < o.minuta, sekunda < o.sekunda);
+    return (godzina < o.godzina && minuta < o.minuta && sekunda < o.sekunda);
 }
 
 auto ::Time ::operator==(Time const& o) const -> bool
 {
-    return (godzina == o.godzina, minuta == o.minuta, sekunda == o.sekunda);
+    return (godzina == o.godzina && minuta == o.minuta && sekunda == o.sekunda);
 }
 
 auto ::Time ::operator!=(Time const& o) const -> bool
 {
-    return (godzina != o.godzina, minuta != o.minuta, sekunda != o.sekunda);
+    return (godzina != o.godzina || minuta != o.minuta || sekunda != o.sekunda);
 }
 
 

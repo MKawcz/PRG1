@@ -12,7 +12,7 @@ struct Destr {
 
     ~Destr()
     {
-        std::cout << wartosc << " DESTRUCTION!" << std::endl;
+        std::cout << "DESTRUCTION! " << wartosc << std::endl;
     }
 };
 

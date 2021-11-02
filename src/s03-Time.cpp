@@ -127,12 +127,28 @@ auto ::Time ::operator-(Time const& o) const -> Time
 
 auto ::Time ::operator>(Time const& o) const -> bool
 {
-    return (godzina > o.godzina && minuta > o.minuta && sekunda > o.sekunda);
+    auto godziny  = godzina * 3600;
+    auto minuty   = minuta * 60;
+    auto ile_s    = sekunda + godziny + minuty;
+    auto ogodziny = o.godzina * 3600;
+    auto ominuty  = o.minuta * 60;
+    auto oile_s   = o.sekunda + ogodziny + ominuty;
+
+
+    return (ile_s > oile_s);
 }
 
 auto ::Time ::operator<(Time const& o) const -> bool
 {
-    return (godzina < o.godzina && minuta < o.minuta && sekunda < o.sekunda);
+    auto godziny  = godzina * 3600;
+    auto minuty   = minuta * 60;
+    auto ile_s    = sekunda + godziny + minuty;
+    auto ogodziny = o.godzina * 3600;
+    auto ominuty  = o.minuta * 60;
+    auto oile_s   = o.sekunda + ogodziny + ominuty;
+
+
+    return (ile_s < oile_s);
 }
 
 auto ::Time ::operator==(Time const& o) const -> bool

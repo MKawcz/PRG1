@@ -3,6 +3,7 @@
  */
 
 #include <RPN_calculator.h>
+#include <math.h>
 
 #include <algorithm>
 #include <iostream>
@@ -11,7 +12,6 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
 
 static auto pop_top(std::stack<double>& stack) -> double
 {
@@ -48,6 +48,91 @@ auto Addition::evaluate(stack_type& stack) const -> void
     auto const b = pop_top(stack);
     auto const a = pop_top(stack);
     stack.push(a + b);
+}
+
+auto Subtraction::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for -"};
+    }
+    auto const b = pop_top(stack);
+    auto const a = pop_top(stack);
+    stack.push(a - b);
+}
+
+auto Multiplication::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for *"};
+    }
+    auto const b = pop_top(stack);
+    auto const a = pop_top(stack);
+    stack.push(a * b);
+}
+
+auto Division::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for /"};
+    }
+    auto const b = pop_top(stack);
+    auto const a = pop_top(stack);
+    stack.push(a / b);
+}
+
+auto Division_of_int::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for \\"};
+    }
+    auto const b =
+        static_cast<int>(pop_top(stack));  // static_cast - wykorzystujemy do
+                                           // konwersji danych zapisanych w
+                                           // zmiennych roznych typow
+    auto const a = static_cast<int>(pop_top(stack));
+    stack.push(a / b);
+}
+
+auto Modulo::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for %"};
+    }
+    auto const b =
+        static_cast<int>(pop_top(stack));  // static_cast - wykorzystujemy do
+                                           // konwersji danych zapisanych w
+                                           // zmiennych roznych typow
+    auto const a = static_cast<int>(pop_top(stack));
+    stack.push(a % b);
+}
+
+auto Exponentiation::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 2) {
+        throw std::logic_error{"not enough operands for **"};
+    }
+    auto const b = pop_top(stack);
+    auto const a = pop_top(stack);
+    stack.push(pow(a, b));
+}
+
+auto Square_root::evaluate(stack_type& stack) const -> void
+{
+    if (stack.size() < 1) {
+        throw std::logic_error{"not enough operands for sqrt"};
+    }
+    auto const a = pop_top(stack);
+    stack.push(sqrt(a));
+}
+
+auto Logarithm::evaluate(stack_type& stack) const
+    -> void  // Zwraca logarytm o podstawie 10 z podanej liczby
+{
+    if (stack.size() < 1) {
+        throw std::logic_error{"not enough operands for log"};
+    }
+    auto const a = pop_top(stack);
+    stack.push(log10(a));
 }
 
 Calculator::Calculator(stack_type s) : stack{std::move(s)}
@@ -89,13 +174,37 @@ auto main(int argc, char* argv[]) -> int
     for (auto const& each : make_args(argc, argv)) {
         try {
             using student::rpn_calculator::Addition;
+            using student::rpn_calculator::Division;
+            using student::rpn_calculator::Division_of_int;
+            using student::rpn_calculator::Exponentiation;
             using student::rpn_calculator::Literal;
+            using student::rpn_calculator::Logarithm;
+            using student::rpn_calculator::Modulo;
+            using student::rpn_calculator::Multiplication;
             using student::rpn_calculator::Print;
+            using student::rpn_calculator::Square_root;
+            using student::rpn_calculator::Subtraction;
 
             if (each == "p") {
                 calculator.push(std::make_unique<Print>());
             } else if (each == "+") {
                 calculator.push(std::make_unique<Addition>());
+            } else if (each == "-") {
+                calculator.push(std::make_unique<Subtraction>());
+            } else if (each == "*") {
+                calculator.push(std::make_unique<Multiplication>());
+            } else if (each == "/") {
+                calculator.push(std::make_unique<Division>());
+            } else if (each == "\\") {
+                calculator.push(std::make_unique<Division_of_int>());
+            } else if (each == "%") {
+                calculator.push(std::make_unique<Modulo>());
+            } else if (each == "**") {
+                calculator.push(std::make_unique<Exponentiation>());
+            } else if (each == "sqrt") {
+                calculator.push(std::make_unique<Square_root>());
+            } else if (each == "log") {
+                calculator.push(std::make_unique<Logarithm>());
             } else {
                 calculator.push(std::make_unique<Literal>(std::stod(each)));
             }

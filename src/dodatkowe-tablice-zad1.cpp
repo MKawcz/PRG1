@@ -30,38 +30,14 @@ void wybor(char tab[], char& gracz)  // gracz wybiera pole do wstawienia znaku
     std::cin >> a;
     std::cout << std::endl;
 
-    if ((a >= 1) && (a <= 9) && (tab[a] == ' ')) {
-        tab[a] = gracz;
-    }
     if ((tab[a] == 'O') || (tab[a] == 'X')) {
         std::cout << "Podane pole jest już zajete!" << std::endl;
-
-        std::cout << "Gracz " << gracz << " gdzie wstawic kolko? "
-                  << "\n";
-
-        std::cout << "wybierz pole: ";
-        std::cin >> a;
-        std::cout << std::endl;
-        if ((a >= 1) && (a <= 9) && (tab[a] == ' ')) {
-            tab[a] = gracz;
-        }
-    }
-    if ((a > 9) || (a < 1)) {
+    } else if ((a < 1) || (a > 9)) {
         std::cout << "Podane pole wychodzi poza plansze!" << std::endl;
-
-        std::cout << "Gracz " << gracz << " gdzie wstawic kolko? "
-                  << "\n";
-
-        std::cout << "wybierz pole: ";
-        std::cin >> a;
-        std::cout << std::endl;
-
-        if ((a >= 1) && (a <= 9) && (tab[a] == ' ')) {
-            tab[a] = gracz;
-        }
+    } else if ((a >= 1) && (a <= 9) && (tab[a] == ' ')) {
+        tab[a] = gracz;
+        gracz  = (gracz == 'O') ? 'X' : 'O';
     }
-
-    gracz = (gracz == 'O') ? 'X' : 'O';
 }
 
 bool wygrana(char t[], char g)

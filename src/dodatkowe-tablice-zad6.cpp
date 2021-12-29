@@ -3,89 +3,116 @@
 
 
 struct Kontakt {
-    int numer_telefonu;
+    long int numer_telefonu;
     std::string nazwisko;
     int liczba_polaczen;
 
-    /* Kontakt(int nr, std::string naz, int lp)
-     {
-         numer_telefonu  = nr;
-         nazwisko        = naz;
-         liczba_polaczen = lp;
-     }
-     */
-    void wypisz(Kontakt k[5000])
+    Kontakt()
     {
-        for (int i = 0; i < 5000; i++) {
-            std::cout << k[i].numer_telefonu << " " << k[i].nazwisko << " "
-                      << k[i].liczba_polaczen << std::endl;
-        }
-    }
-
-    void szukaj(Kontakt k[5000], int n)
-    {
-        for (int i = 0; i < 5000; i++) {
-            if (n == k[i].numer_telefonu) {
-                std::cout << k[i].numer_telefonu << " " << k[i].nazwisko
-                          << std::endl;
-            } else {
-                std::cout << "Podanego numeru nie ma w ksiazce" << std::endl;
-            }
-        }
-    }
-
-    void dodaj(Kontakt k[5000], int n, std::string na, int l)
-    {
-        bool t;
-        for (int i = 0; i < 5000; i++) {
-            if (n != k[i].numer_telefonu) {
-                t = true;
-            } else {
-                t = false;
-            }
-        }
-
-        if (t) {
-            numer_telefonu  = n;
-            nazwisko        = na;
-            liczba_polaczen = l;
-        } else {
-            std::cout << "Istnieje już kontakt o takim numerze" << std::endl;
-        }
-    }
-
-    void usun(Kontakt k[5000], int n)
-    {
-        for (int i = 0; i < 5000; i++) {
-            if (n == k[i].numer_telefonu) {
-                for (int j = i; j < 5000 - 1; j++)
-                    k[i] = k[i + 1];
-            } else {
-                std::cout << "Podanego numeru nie ma w ksiazce" << std::endl;
-            }
-        }
-    }
-
-    void polacz(Kontakt k[5000], std::string n)
-    {
-        for (int i = 0; i < 5000; i++) {
-            if (n == k[i].nazwisko) {
-                k[i].liczba_polaczen++;
-                std::cout << k[i].numer_telefonu << " " << k[i].nazwisko << " "
-                          << k[i].liczba_polaczen << std::endl;
-            } else {
-                std::cout << "Podanego nazwiska nie ma w ksiazce" << std::endl;
-            }
+        if (numer_telefonu > 999999999) {
+            std::cout << "Podany numer jest za długi" << std::endl;
+        } else if (numer_telefonu < 100000000) {
+            std::cout << "Podany numer jest za krotki" << std::endl;
         }
     }
 };
 
+void wypisz(Kontakt k[], int& n)
+{
+    for (int i = 0; i <= n; i++) {
+        std::cout << k[i].numer_telefonu << " " << k[i].nazwisko << " "
+                  << k[i].liczba_polaczen << std::endl;
+    }
+}
+
+void szukaj(Kontakt k[], int& n, const long int& nr)
+{
+    bool t;
+    int i;
+    for (i = 0; i <= n; i++) {
+        if (nr == k[i].numer_telefonu) {
+            t = true;
+            break;
+        } else {
+            t = false;
+        }
+    }
+
+    if (t) {
+        std::cout << k[i].numer_telefonu << " " << k[i].nazwisko << std::endl;
+    } else {
+        std::cout << "Podanego numeru nie ma w ksiazce" << std::endl;
+    }
+}
+
+void dodaj(Kontakt k[],
+           int& n,
+           const long int& nr,
+           const std::string& na,
+           const int& l)
+{
+    bool t;
+    for (int i = 0; i <= n; i++) {
+        if (nr != k[i].numer_telefonu) {
+            t = true;
+        } else {
+            t = false;
+        }
+    }
+
+    if (t) {
+        n++;
+        k[n].numer_telefonu  = nr;
+        k[n].nazwisko        = na;
+        k[n].liczba_polaczen = l;
+    } else {
+        std::cout << "Istnieje już kontakt o takim numerze" << std::endl;
+    }
+}
+
+void usun(Kontakt k[], int& n, const long int& nr)
+{
+    for (int i = 0; i <= n; i++) {
+        if (nr == k[i].numer_telefonu) {
+            for (int j = i; j < n; j++) {
+                k[i] = k[i + 1];
+            }
+        }
+        break;
+    }
+
+    std::cout << "Podanego numeru nie ma w ksiazce" << std::endl;
+}
+
+void polacz(Kontakt k[], int& n, const std::string& naz)
+{
+    bool t;
+    int i;
+    for (i = 0; i <= n; i++) {
+        if (naz == k[i].nazwisko) {
+            t = true;
+            break;
+        } else {
+            t = false;
+        }
+    }
+
+    if (t) {
+        k[i].liczba_polaczen++;
+        std::cout << k[i].numer_telefonu << " " << k[i].nazwisko << " "
+                  << k[i].liczba_polaczen << std::endl;
+    } else {
+        std::cout << "Podanego nazwiska nie ma w ksiazce" << std::endl;
+    }
+}
+
+
 auto main() -> int
 {
-    Kontakt ksiazka[5000];
-    int a, nr;
+    int n            = 0, a;
+    Kontakt* ksiazka = new Kontakt[n];
+    long int nr;
     std::string naz;
-    int liczba_tel;
 
 
     while (a != 0) {
@@ -94,7 +121,7 @@ auto main() -> int
             std::cout << "Podaj numer: ";
             std::cin >> nr;
 
-            ksiazka[5000].szukaj(ksiazka[5000], nr);
+            szukaj(ksiazka, n, nr);
             break;
 
         case 2:
@@ -105,7 +132,7 @@ auto main() -> int
             std::cin >> naz;
             std::cout << std::endl;
 
-            dodaj(ksiazka[5000], nr, naz, 0);
+            dodaj(ksiazka, n, nr, naz, 0);
 
             break;
 
@@ -113,7 +140,7 @@ auto main() -> int
             std::cout << "Podaj numer: ";
             std::cin >> nr;
 
-            usun(ksiazka[5000], nr);
+            usun(ksiazka, n, nr);
 
             break;
 
@@ -121,23 +148,24 @@ auto main() -> int
             std::cout << "Podaj nazwisko: ";
             std::cin >> naz;
 
-            polacz(ksiazka[5000], naz);
+            polacz(ksiazka, n, naz);
 
             break;
 
         case 5:
-            wypisz(ksiazka[5000]);
+            wypisz(ksiazka, n);
             break;
 
         default:
             std::cout << "Co chcesz zrobić?\n 1 - szukaj numeru, 2 - dodaj "
                          "numer, 3 - usuń numer, 4 - połącz z kontaktem, 5 - "
-                         "wypisz numery, 0 - wyjdź";
+                         "wypisz numery, 0 - wyjdź"
+                      << std::endl;
             std::cin >> a;
             break;
         }
     }
 
-
+    delete[] ksiazka;
     return 0;
 }

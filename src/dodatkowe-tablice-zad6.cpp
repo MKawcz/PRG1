@@ -6,17 +6,6 @@ struct Kontakt {
     long int numer_telefonu;
     std::string nazwisko;
     int liczba_polaczen;
-
-    /*
-       Kontakt()
-       {
-           if (numer_telefonu > 999999999) {
-               std::cout << "Podany numer jest za długi" << std::endl;
-           } else if (numer_telefonu <= 99999999) {
-               std::cout << "Podany numer jest za krotki" << std::endl;
-           }
-       }
-   */
 };
 
 void dodaj(Kontakt*& k,
@@ -148,6 +137,7 @@ auto main() -> int
             std::cin >> nr;
 
             szukaj(ksiazka, n, nr);
+            std::cout << std::endl;
             break;
 
         case 2:
@@ -158,8 +148,14 @@ auto main() -> int
             std::cin >> naz;
             std::cout << std::endl;
 
-            dodaj(ksiazka, n, nr, naz, 0);
-
+            if (nr > 999999999) {
+                std::cout << "Podany numer jest za długi" << std::endl;
+            } else if (nr < 100000000) {
+                std::cout << "Podany numer jest za krotki" << std::endl;
+            } else {
+                dodaj(ksiazka, n, nr, naz, 0);
+            }
+            std::cout << std::endl;
             break;
 
         case 3:
@@ -167,7 +163,7 @@ auto main() -> int
             std::cin >> nr;
 
             usun(ksiazka, n, nr);
-
+            std::cout << std::endl;
             break;
 
         case 4:
@@ -175,11 +171,12 @@ auto main() -> int
             std::cin >> naz;
 
             polacz(ksiazka, n, naz);
-
+            std::cout << std::endl;
             break;
 
         case 5:
             wypisz(ksiazka, n);
+            std::cout << std::endl;
             break;
         }
     }

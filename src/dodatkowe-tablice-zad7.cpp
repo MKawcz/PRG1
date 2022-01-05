@@ -7,63 +7,62 @@ struct Data {
     int dzien;
     int miesiac;
     int rok;
-    
-        Data(int d, int m, int r) : dzien{d}, miesiac{m}, rok{r}
-        {
-            if (miesiac == 2) {
-                if (dzien > 28) {
-                    dzien = dzien - 28;
-                    miesiac++;
-                } else if (dzien < 1) {
-                    dzien = 31 + dzien;
-                    miesiac--;
-                }
-            } else if (miesiac == 8 || miesiac == 1) {
-                if (dzien > 31) {
-                    dzien = dzien - 31;
-                    miesiac++;
-                } else if (dzien < 1) {
-                    dzien = 31 + dzien;
-                    miesiac--;
-                }
 
-            } else if (miesiac == 3) {
-                if (dzien > 31) {
-                    dzien = dzien - 31;
-                    miesiac++;
-                } else if (dzien < 1) {
-                    dzien = 28 + dzien;
-                    miesiac--;
-                }
-            } else if (miesiac == 5 || miesiac == 7 || miesiac == 10
-                       || miesiac == 12) {
-                if (dzien > 31) {
-                    dzien = dzien - 31;
-                    miesiac++;
-                } else if (dzien < 1) {
-                    dzien = 30 + dzien;
-                    miesiac--;
-                }
-            } else if (miesiac == 4 || miesiac == 6 || miesiac == 9
-                       || miesiac == 11) {
-                if (dzien > 30) {
-                    dzien = dzien - 30;
-                    miesiac++;
-                } else if (dzien < 1) {
-                    dzien = 31 + dzien;
-                    miesiac--;
-                }
+    Data(int d, int m, int r) : dzien{d}, miesiac{m}, rok{r}
+    {
+        if (miesiac == 2) {
+            if (dzien > 28) {
+                dzien = dzien - 28;
+                miesiac++;
+            } else if (dzien < 1) {
+                dzien = 31 + dzien;
+                miesiac--;
+            }
+        } else if (miesiac == 8 || miesiac == 1) {
+            if (dzien > 31) {
+                dzien = dzien - 31;
+                miesiac++;
+            } else if (dzien < 1) {
+                dzien = 31 + dzien;
+                miesiac--;
             }
 
-            if (miesiac > 12) {
-                miesiac = miesiac - 12;
-                rok++;
-            } else if (miesiac < 1) {
-                miesiac = 12 + miesiac;
-                rok--;
+        } else if (miesiac == 3) {
+            if (dzien > 31) {
+                dzien = dzien - 31;
+                miesiac++;
+            } else if (dzien < 1) {
+                dzien = 28 + dzien;
+                miesiac--;
+            }
+        } else if (miesiac == 5 || miesiac == 7 || miesiac == 10
+                   || miesiac == 12) {
+            if (dzien > 31) {
+                dzien = dzien - 31;
+                miesiac++;
+            } else if (dzien < 1) {
+                dzien = 30 + dzien;
+                miesiac--;
+            }
+        } else if (miesiac == 4 || miesiac == 6 || miesiac == 9
+                   || miesiac == 11) {
+            if (dzien > 30) {
+                dzien = dzien - 30;
+                miesiac++;
+            } else if (dzien < 1) {
+                dzien = 31 + dzien;
+                miesiac--;
             }
         }
-    
+
+        if (miesiac > 12) {
+            miesiac = miesiac - 12;
+            rok++;
+        } else if (miesiac < 1) {
+            miesiac = 12 + miesiac;
+            rok--;
+        }
+    }
 };
 
 struct Pacjent {
@@ -71,7 +70,6 @@ struct Pacjent {
     std::string haslo;
     std::string nazwisko;
     std::vector<Data> daty;
-
 };
 /*
     void wyloguj()
@@ -89,22 +87,30 @@ void wypisz(std::vector<Data> d)
 
 bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
 {
-    if(d.size() > 0) {
-        if (((d.back().rok == d2.back().rok) && (d.back().miesiac + 6 == d2.back().miesiac)
+    if (d.size() > 0) {
+        if (((d.back().rok == d2.back().rok)
+             && (d.back().miesiac + 6 == d2.back().miesiac)
              && (d.back().dzien < d2.back().dzien))
-            || ((d.back().rok == d2.back().rok) && (d.back().miesiac + 6 < d2.back().miesiac))
+            || ((d.back().rok == d2.back().rok)
+                && (d.back().miesiac + 6 < d2.back().miesiac))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 7)
-                && (d2.back().miesiac == 1) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac == 1)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 8)
-                && (d2.back().miesiac == 2) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac == 2)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 9)
-                && (d2.back().miesiac == 3) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac == 3)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 10)
-                && (d2.back().miesiac == 4) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac == 4)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 11)
-                && (d2.back().miesiac == 5) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac == 5)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
-                && (d2.back().miesiac == 6) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac == 6)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 7)
                 && (d2.back().miesiac > 1))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 8)
@@ -125,11 +131,14 @@ bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
             std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
         }
     } else if (d.size() == 0) {
-        if (((d.back().rok == d2.back().rok) && (d.back().miesiac + 1 == d2.back().miesiac)
+        if (((d.back().rok == d2.back().rok)
+             && (d.back().miesiac + 1 == d2.back().miesiac)
              && (d.back().dzien < d2.back().dzien))
-            || ((d.back().rok == d2.back().rok) && (d.back().miesiac + 1 < d2.back().miesiac))
+            || ((d.back().rok == d2.back().rok)
+                && (d.back().miesiac + 1 < d2.back().miesiac))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
-                && (d2.back().miesiac = 1) && (d.back().dzien < d2.back().dzien))
+                && (d2.back().miesiac = 1)
+                && (d.back().dzien < d2.back().dzien))
             || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
                 && (d2.back().miesiac > 1))
             || (d.back().rok < d2.back().rok)) {
@@ -140,10 +149,10 @@ bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
             return false;
             std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
         }
-    } else{
+    } else {
         return true;
         std::cout << "Mozesz sie juz zaszczepic" << std::endl;
-	}
+    }
 }
 
 void zaszczep(std::vector<Data> d, std::vector<Data> d2)
@@ -154,9 +163,11 @@ void zaszczep(std::vector<Data> d, std::vector<Data> d2)
 void czyWaznyCertyfikat(std::vector<Data> d, std::vector<Data> d2)
 {
     if (d.size() > 0) {
-        if (((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == d2.back().miesiac)
+        if (((d.back().rok + 1 == d2.back().rok)
+             && (d.back().miesiac == d2.back().miesiac)
              && (d.back().dzien >= d2.back().dzien))
-            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac > d2.back().miesiac))
+            || ((d.back().rok + 1 == d2.back().rok)
+                && (d.back().miesiac > d2.back().miesiac))
             || (d.back().rok == d2.back().rok)) {
             std::cout << "Twoj certyfikat jest wciaz wazny" << std::endl;
         } else {
@@ -170,8 +181,7 @@ void rejestruj(Pacjent*& p,
                unsigned int& n,
                const std::string& naz,
                const std::string& log,
-               const std::string& has,
-			   std::vector<Data>& d)
+               const std::string& has)
 {
     bool t;
     for (unsigned int i = 0; i < n; i++) {
@@ -188,7 +198,6 @@ void rejestruj(Pacjent*& p,
         new_p[n++].login    = log;
         new_p[n++].haslo    = has;
         new_p[n++].nazwisko = naz;
-		new_p[n++].daty = d;
 
         delete[] p;
         p = new_p;
@@ -204,7 +213,7 @@ void zaloguj(Pacjent*& p,
     bool t;
     unsigned int i;
     std::vector<Data> daty2;
-    
+
     for (i = 0; i < n; i++) {
         if ((log == p[i].login) && (has == p[i].haslo)) {
             t = true;
@@ -217,13 +226,15 @@ void zaloguj(Pacjent*& p,
     if (t) {
         std::cout << "Login: " << p[i].login << std::endl
                   << "Nazwisko: " << p[i].nazwisko << std::endl
-                  << "Data ostatniego szczepienia: " << p[i].daty.back().dzien <<"."<< p[i].daty.back().miesiac <<"."<< p[i].daty.back().rok << std::endl;
+                  << "Data ostatniego szczepienia: " << p[i].daty.back().dzien
+                  << "." << p[i].daty.back().miesiac << "."
+                  << p[i].daty.back().rok << std::endl;
 
         while (a != 5) {
-            std::cout << "Co chcesz zrobiæ?\n 1 - pokaz daty moich szczepien, "
+            std::cout << "Co chcesz zrobic?\n 1 - pokaz daty moich szczepien, "
                          "2 - sprawdz czy moge sie zaszczepic"
                          ", 3 - zaszczep, 4 - sprawdz waznosc certyfikatu, 5 - "
-                         "wyloguj,"  // 0 - wyjdŸ"
+                         "wyloguj,"  // 0 - wyjdz"
                       << std::endl;
             std::cin >> a;
 
@@ -244,7 +255,7 @@ void zaloguj(Pacjent*& p,
                 std::cin >> z;
                 std::cout << std::endl;
 
-				daty2.push_back({x,y,z});
+                daty2.push_back({x, y, z});
                 czyMoge(p[i].daty, daty2);
 
                 daty2.clear();
@@ -262,14 +273,14 @@ void zaloguj(Pacjent*& p,
                 std::cin >> z;
                 std::cout << std::endl;
 
-				daty2.push_back({x,y,z});
+                daty2.push_back({x, y, z});
                 if (czyMoge(p[i].daty, daty2)) {
                     zaszczep(p[i].daty, daty2);
                 } else {
                     std::cout << "Nie mozesz sie jeszcze zaszczepic"
                               << std::endl;
                 }
-                
+
                 daty2.clear();
                 break;
 
@@ -285,10 +296,10 @@ void zaloguj(Pacjent*& p,
                 std::cin >> z;
                 std::cout << std::endl;
 
-				daty2.push_back({x,y,z});
+                daty2.push_back({x, y, z});
                 czyWaznyCertyfikat(p[i].daty, daty2);
-                
-				daty2.clear();
+
+                daty2.clear();
                 break;
                 /*
                             case 5:
@@ -312,8 +323,8 @@ int main()
 
 
     while (a != 0) {
-        std::cout << "Co chcesz zrobiæ?\n 1 - zaloguj, 2 - zarejestruj,  0 - "
-                     "wyjdŸ z programu"
+        std::cout << "Co chcesz zrobic?\n 1 - zaloguj, 2 - zarejestruj,  0 - "
+                     "wyjdz z programu"
                   << std::endl;
         std::cin >> a;
 
@@ -341,7 +352,7 @@ int main()
             std::cin >> hs;
             std::cout << std::endl;
 
-            rejestruj(p, n, naz, lg, hs, {0,0,0});
+            rejestruj(p, n, naz, lg, hs);
             std::cout << std::endl;
             break;
         }

@@ -177,44 +177,35 @@ void czyWaznyCertyfikat(std::vector<Data> d, std::vector<Data> d2)
 }
 
 
-void rejestruj(Pacjent*& p,
-               unsigned int& n,
+void rejestruj(std::vector<Pacjent> p,
                const std::string& naz,
                const std::string& log,
                const std::string& has)
 {
     bool t;
-    for (unsigned int i = 0; i < n; i++) {
+    for (size_t i = 0; i < p.size(); i++) {
         if (p[i].login == log) {
-            std::cout << "Istnieje ju¿ pacjeny o takim loginie" << std::endl;
+            std::cout << "Istnieje juz pacjent o takim loginie" << std::endl;
             t = false;
             break;
         }
     }
 
     if (t) {
-        Pacjent* new_p = new Pacjent[n + 1];
-        std::copy(p, p + n, new_p);
-        new_p[n++].login    = log;
-        new_p[n++].haslo    = has;
-        new_p[n++].nazwisko = naz;
-
-        delete[] p;
-        p = new_p;
+       	p.push_back({naz, log, has});
     }
 }
 
-void zaloguj(Pacjent*& p,
-             unsigned int& n,
+void zaloguj(std::vector<Pacjent> p,
              const std::string& log,
              const std::string& has)
 {
     int a, x, y, z;
     bool t;
-    unsigned int i;
+    size_t i;
     std::vector<Data> daty2;
 
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < p.size(); i++) {
         if ((log == p[i].login) && (has == p[i].haslo)) {
             t = true;
             break;
@@ -318,8 +309,7 @@ int main()
 {
     int a;
     std::string lg, hs, naz;
-    unsigned int n = 0;
-    Pacjent* p     = nullptr;
+    std::vector<Pacjent> p;
 
 
     while (a != 0) {
@@ -337,7 +327,7 @@ int main()
             std::cin >> hs;
             std::cout << std::endl;
 
-            zaloguj(p, n, lg, hs);
+            zaloguj(p, lg, hs);
             std::cout << std::endl;
             break;
 
@@ -352,13 +342,12 @@ int main()
             std::cin >> hs;
             std::cout << std::endl;
 
-            rejestruj(p, n, naz, lg, hs);
+            rejestruj(p, naz, lg, hs);
             std::cout << std::endl;
             break;
         }
     }
 
-    delete[] p;
 
     return 0;
 }

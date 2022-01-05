@@ -1,12 +1,13 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <vector>
 
 struct Data {
     int dzien;
     int miesiac;
     int rok;
-    /*
+    
         Data(int d, int m, int r) : dzien{d}, miesiac{m}, rok{r}
         {
             if (miesiac == 2) {
@@ -62,17 +63,15 @@ struct Data {
                 rok--;
             }
         }
-    */
+    
 };
 
 struct Pacjent {
     std::string login;
     std::string haslo;
     std::string nazwisko;
-    unsigned int l = 0;
-    Data* daty     = nullptr;
+    std::vector<Data> daty;
 
-    delete[] daty;
 };
 /*
     void wyloguj()
@@ -80,90 +79,85 @@ struct Pacjent {
 
     }
 */
-void wypisz(Data d[], unsigned int l)
+void wypisz(std::vector<Data> d)
 {
-    for (unsigned int i = 0; i < l; i++) {
+    for (size_t i = 0; i < d.size(); i++) {
         std::cout << d[i].dzien << "." << d[i].miesiac << "." << d[i].rok
                   << std::endl;
     }
 }
 
-bool czyMoge(Data d[], Data d2[], unsigned int l)
+bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
 {
-    if (l > 0) {
+    if(d.size() > 0) {
+        if (((d.back().rok == d2.back().rok) && (d.back().miesiac + 6 == d2.back().miesiac)
+             && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok == d2.back().rok) && (d.back().miesiac + 6 < d2.back().miesiac))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 7)
+                && (d2.back().miesiac == 1) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 8)
+                && (d2.back().miesiac == 2) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 9)
+                && (d2.back().miesiac == 3) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 10)
+                && (d2.back().miesiac == 4) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 11)
+                && (d2.back().miesiac == 5) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
+                && (d2.back().miesiac == 6) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 7)
+                && (d2.back().miesiac > 1))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 8)
+                && (d2.back().miesiac > 2))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 9)
+                && (d2.back().miesiac > 3))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 10)
+                && (d2.back().miesiac > 4))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 11)
+                && (d2.back().miesiac > 5))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
+                && (d2.back().miesiac > 6))
+            || (d.back().rok < d2.back().rok)) {
+            return true;
+            std::cout << "Mozesz sie juz zaszczepic" << std::endl;
+        } else {
+            return false;
+            std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
+        }
+    } else if (d.size() == 0) {
+        if (((d.back().rok == d2.back().rok) && (d.back().miesiac + 1 == d2.back().miesiac)
+             && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok == d2.back().rok) && (d.back().miesiac + 1 < d2.back().miesiac))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
+                && (d2.back().miesiac = 1) && (d.back().dzien < d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == 12)
+                && (d2.back().miesiac > 1))
+            || (d.back().rok < d2.back().rok)) {
+            return true;
+            std::cout << "Mozesz sie juz zaszczepic" << std::endl;
+
+        } else {
+            return false;
+            std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
+        }
+    } else{
         return true;
         std::cout << "Mozesz sie juz zaszczepic" << std::endl;
-    } else if (l == 0) {
-        if (((d[0].rok == d2[0].rok) && (d[0].miesiac + 1 == d2[0].miesiac)
-             && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok == d2[0].rok) && (d[0].miesiac + 1 < d2[0].miesiac))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 12)
-                && (d2[0].miesiac = 1) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 12)
-                && (d2[0].miesiac > 1))
-            || (d[0].rok < d2[0].rok)) {
-            return true;
-            std::cout << "Mozesz sie juz zaszczepic" << std::endl;
-
-        } else {
-            return false;
-            std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
-        }
-    } else {
-        if (((d[0].rok == d2[0].rok) && (d[l].miesiac + 6 == d2[0].miesiac)
-             && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok == d2[0].rok) && (d[l].miesiac + 6 < d2[0].miesiac))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 7)
-                && (d2[0].miesiac == 1) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 8)
-                && (d2[0].miesiac == 2) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 9)
-                && (d2[0].miesiac == 3) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 10)
-                && (d2[0].miesiac == 4) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 11)
-                && (d2[0].miesiac == 5) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 12)
-                && (d2[0].miesiac == 6) && (d[0].dzien < d2[0].dzien))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 7)
-                && (d2[0].miesiac > 1))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 8)
-                && (d2[0].miesiac > 2))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 9)
-                && (d2[0].miesiac > 3))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 10)
-                && (d2[0].miesiac > 4))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 11)
-                && (d2[0].miesiac > 5))
-            || ((d[0].rok + 1 == d2[0].rok) && (d[0].miesiac == 12)
-                && (d2[0].miesiac > 6))
-            || (d[0].rok < d2[0].rok)) {
-            return true;
-            std::cout << "Mozesz sie juz zaszczepic" << std::endl;
-        } else {
-            return false;
-            std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
-        }
-    }
+	}
 }
 
-void zaszczep(Data*& d, Data d2[], unsigned int& l)
+void zaszczep(std::vector<Data> d, std::vector<Data> d2)
 {
-    Data* new_d = new Data[l + 1];
-    std::copy(d, d + l, new_d);
-    new_d[l++] = {d2[0].dzien, d2[0].miesiac, d2[0].rok};
-
-    delete[] d;
-    d = new_d;
+    d.push_back({d2.back().dzien, d2.back().miesiac, d2.back().rok});
 }
 
-void czyWaznyCertyfikat(Data d[], Data d2[], unsigned int l)
+void czyWaznyCertyfikat(std::vector<Data> d, std::vector<Data> d2)
 {
-    if (l > 1) {
-        if (((d[l].rok + 1 == d2[0].rok) && (d[l].miesiac == d2[0].miesiac)
-             && (d[l].dzien >= d2[0].dzien))
-            || ((d[l].rok + 1 == d2[0].rok) && (d[l].miesiac > d2[0].miesiac))
-            || (d[l].rok == d2[0].rok)) {
+    if (d.size() > 0) {
+        if (((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac == d2.back().miesiac)
+             && (d.back().dzien >= d2.back().dzien))
+            || ((d.back().rok + 1 == d2.back().rok) && (d.back().miesiac > d2.back().miesiac))
+            || (d.back().rok == d2.back().rok)) {
             std::cout << "Twoj certyfikat jest wciaz wazny" << std::endl;
         } else {
             std::cout << "Twoj certyfikat nie jest juz wazny" << std::endl;
@@ -176,12 +170,13 @@ void rejestruj(Pacjent*& p,
                unsigned int& n,
                const std::string& naz,
                const std::string& log,
-               const std::string& has)
+               const std::string& has,
+			   std::vector<Data>& d)
 {
     bool t;
     for (unsigned int i = 0; i < n; i++) {
         if (p[i].login == log) {
-            std::cout << "Istnieje juÅ¼ pacjeny o takim loginie" << std::endl;
+            std::cout << "Istnieje ju¿ pacjeny o takim loginie" << std::endl;
             t = false;
             break;
         }
@@ -193,9 +188,7 @@ void rejestruj(Pacjent*& p,
         new_p[n++].login    = log;
         new_p[n++].haslo    = has;
         new_p[n++].nazwisko = naz;
-        new_p[n++].l        = 0;
-        new_p[n++].daty[0]  = {0, 0, 0};
-
+		new_p[n++].daty = d;
 
         delete[] p;
         p = new_p;
@@ -207,10 +200,11 @@ void zaloguj(Pacjent*& p,
              const std::string& log,
              const std::string& has)
 {
-    int a;
+    int a, x, y, z;
     bool t;
     unsigned int i;
-    Data daty2[] = {0, 0, 0};
+    std::vector<Data> daty2;
+    
     for (i = 0; i < n; i++) {
         if ((log == p[i].login) && (has == p[i].haslo)) {
             t = true;
@@ -223,80 +217,78 @@ void zaloguj(Pacjent*& p,
     if (t) {
         std::cout << "Login: " << p[i].login << std::endl
                   << "Nazwisko: " << p[i].nazwisko << std::endl
-                  << "Data ostatniego szczepienia: " << p[i].daty << std::endl;
+                  << "Data ostatniego szczepienia: " << p[i].daty.back().dzien <<"."<< p[i].daty.back().miesiac <<"."<< p[i].daty.back().rok << std::endl;
 
         while (a != 5) {
-            std::cout << "Co chcesz zrobiÄ‡?\n 1 - pokaz daty moich szczepien, "
+            std::cout << "Co chcesz zrobiæ?\n 1 - pokaz daty moich szczepien, "
                          "2 - sprawdz czy moge sie zaszczepic"
                          ", 3 - zaszczep, 4 - sprawdz waznosc certyfikatu, 5 - "
-                         "wyloguj,"  // 0 - wyjdÅº"
+                         "wyloguj,"  // 0 - wyjdŸ"
                       << std::endl;
             std::cin >> a;
 
             switch (a) {
             case 1:
-                wypisz(p[i].daty, p[i].l);
+                wypisz(p[i].daty);
                 break;
 
             case 2:
                 std::cout << "Podaj dzisiejsza date: " << std::endl;
                 std::cout << "Dzien: ";
-                std::cin >> daty2[0].dzien;
+                std::cin >> x;
                 std::cout << std::endl;
                 std::cout << "Miesiac: ";
-                std::cin >> daty2[0].miesiac;
+                std::cin >> y;
                 std::cout << std::endl;
                 std::cout << "Rok: ";
-                std::cin >> daty2[0].rok;
+                std::cin >> z;
                 std::cout << std::endl;
 
-                czyMoge(p[i].daty, daty2, p[i].l);
+				daty2.push_back({x,y,z});
+                czyMoge(p[i].daty, daty2);
 
-                daty2[0].dzien   = 0;
-                daty2[0].miesiac = 0;
-                daty2[0].rok     = 0;
+                daty2.clear();
                 break;
 
             case 3:
                 std::cout << "Podaj dzisiejsza date: " << std::endl;
                 std::cout << "Dzien: ";
-                std::cin >> daty2[0].dzien;
+                std::cin >> x;
                 std::cout << std::endl;
                 std::cout << "Miesiac: ";
-                std::cin >> daty2[0].miesiac;
+                std::cin >> y;
                 std::cout << std::endl;
                 std::cout << "Rok: ";
-                std::cin >> daty2[0].rok;
+                std::cin >> z;
                 std::cout << std::endl;
 
-                if (czyMoge(p[i].daty, daty2, p[i].l)) {
-                    zaszczep(p[i].daty, daty2, p[i].l);
+				daty2.push_back({x,y,z});
+                if (czyMoge(p[i].daty, daty2)) {
+                    zaszczep(p[i].daty, daty2);
                 } else {
                     std::cout << "Nie mozesz sie jeszcze zaszczepic"
                               << std::endl;
                 }
-                daty2[0].dzien   = 0;
-                daty2[0].miesiac = 0;
-                daty2[0].rok     = 0;
+                
+                daty2.clear();
                 break;
 
             case 4:
                 std::cout << "Podaj dzisiejsza date: " << std::endl;
                 std::cout << "Dzien: ";
-                std::cin >> daty2[0].dzien;
+                std::cin >> x;
                 std::cout << std::endl;
                 std::cout << "Miesiac: ";
-                std::cin >> daty2[0].miesiac;
+                std::cin >> y;
                 std::cout << std::endl;
                 std::cout << "Rok: ";
-                std::cin >> daty2[0].rok;
+                std::cin >> z;
                 std::cout << std::endl;
 
-                czyWaznyCertyfikat(p[i].daty, daty2, p[i].l);
-                daty2[0].dzien   = 0;
-                daty2[0].miesiac = 0;
-                daty2[0].rok     = 0;
-
+				daty2.push_back({x,y,z});
+                czyWaznyCertyfikat(p[i].daty, daty2);
+                
+				daty2.clear();
                 break;
                 /*
                             case 5:
@@ -311,7 +303,7 @@ void zaloguj(Pacjent*& p,
     }
 }
 
-auto main() -> int
+int main()
 {
     int a;
     std::string lg, hs, naz;
@@ -320,8 +312,8 @@ auto main() -> int
 
 
     while (a != 0) {
-        std::cout << "Co chcesz zrobiÄ‡?\n 1 - zaloguj, 2 - zarejestruj,  0 - "
-                     "wyjdÅº z programu"
+        std::cout << "Co chcesz zrobiæ?\n 1 - zaloguj, 2 - zarejestruj,  0 - "
+                     "wyjdŸ z programu"
                   << std::endl;
         std::cin >> a;
 
@@ -349,7 +341,7 @@ auto main() -> int
             std::cin >> hs;
             std::cout << std::endl;
 
-            rejestruj(p, n, naz, lg, hs);
+            rejestruj(p, n, naz, lg, hs, {0,0,0});
             std::cout << std::endl;
             break;
         }

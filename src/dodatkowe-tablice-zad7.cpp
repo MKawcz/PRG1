@@ -71,13 +71,8 @@ struct Pacjent {
     std::string nazwisko;
     std::vector<Data> daty;
 };
-/*
-    void wyloguj()
-    {
 
-    }
-*/
-void wypisz(std::vector<Data> d)
+void wypisz(std::vector<Data>& d)
 {
     for (size_t i = 0; i < d.size(); i++) {
         std::cout << d[i].dzien << "." << d[i].miesiac << "." << d[i].rok
@@ -85,9 +80,11 @@ void wypisz(std::vector<Data> d)
     }
 }
 
-bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
+bool czyMoge(std::vector<Data>& d, std::vector<Data>& d2)
 {
-    if (d.size() > 0) {
+    if (d.empty()) {
+        return true;
+    } else if (d.size() > 1) {
         if (((d.back().rok == d2.back().rok)
              && (d.back().miesiac + 6 == d2.back().miesiac)
              && (d.back().dzien < d2.back().dzien))
@@ -125,12 +122,10 @@ bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
                 && (d2.back().miesiac > 6))
             || (d.back().rok < d2.back().rok)) {
             return true;
-            std::cout << "Mozesz sie juz zaszczepic" << std::endl;
         } else {
             return false;
-            std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
         }
-    } else if (d.size() == 0) {
+    } else if (d.size() == 1) {
         if (((d.back().rok == d2.back().rok)
              && (d.back().miesiac + 1 == d2.back().miesiac)
              && (d.back().dzien < d2.back().dzien))
@@ -143,26 +138,23 @@ bool czyMoge(std::vector<Data> d, std::vector<Data> d2)
                 && (d2.back().miesiac > 1))
             || (d.back().rok < d2.back().rok)) {
             return true;
-            std::cout << "Mozesz sie juz zaszczepic" << std::endl;
 
         } else {
             return false;
-            std::cout << "Nie mozesz sie jeszcze zaszczepic" << std::endl;
         }
     } else {
         return true;
-        std::cout << "Mozesz sie juz zaszczepic" << std::endl;
     }
 }
 
-void zaszczep(std::vector<Data> d, std::vector<Data> d2)
+void zaszczep(std::vector<Data>& d, std::vector<Data>& d2)
 {
     d.push_back({d2.back().dzien, d2.back().miesiac, d2.back().rok});
 }
 
-void czyWaznyCertyfikat(std::vector<Data> d, std::vector<Data> d2)
+void czyWaznyCertyfikat(std::vector<Data>& d, std::vector<Data>& d2)
 {
-    if (d.size() > 0) {
+    if (d.size() > 1) {
         if (((d.back().rok + 1 == d2.back().rok)
              && (d.back().miesiac == d2.back().miesiac)
              && (d.back().dzien >= d2.back().dzien))
@@ -171,32 +163,39 @@ void czyWaznyCertyfikat(std::vector<Data> d, std::vector<Data> d2)
             || (d.back().rok == d2.back().rok)) {
             std::cout << "Twoj certyfikat jest wciaz wazny" << std::endl;
         } else {
-            std::cout << "Twoj certyfikat nie jest juz wazny" << std::endl;
+            std::cout << "Twoj certyfikat nie jest wazny" << std::endl;
         }
+    } else {
+        std::cout << "Twoj certyfikat nie jest wazny" << std::endl;
     }
 }
 
 
-void rejestruj(std::vector<Pacjent> p,
-               const std::string& naz,
+void rejestruj(std::vector<Pacjent>& p,
                const std::string& log,
-               const std::string& has)
+               const std::string& has,
+               const std::string& naz,
+               std::vector<Data>& d)
 {
     bool t;
     for (size_t i = 0; i < p.size(); i++) {
         if (p[i].login == log) {
-            std::cout << "Istnieje juz pacjent o takim loginie" << std::endl;
+            std::cout << p[i].login << std::endl;
             t = false;
             break;
+        } else {
+            t = true;
         }
     }
 
     if (t) {
-       	p.push_back({naz, log, has});
+        p.push_back({log, has, naz, d});
+    } else {
+        std::cout << "Istnieje juz pacjent o takim loginie" << std::endl;
     }
 }
 
-void zaloguj(std::vector<Pacjent> p,
+void zaloguj(std::vector<Pacjent>& p,
              const std::string& log,
              const std::string& has)
 {
@@ -206,7 +205,7 @@ void zaloguj(std::vector<Pacjent> p,
     std::vector<Data> daty2;
 
     for (i = 0; i < p.size(); i++) {
-        if ((log == p[i].login) && (has == p[i].haslo)) {
+        if (log == p[i].login && has == p[i].haslo) {
             t = true;
             break;
         } else {
@@ -216,22 +215,34 @@ void zaloguj(std::vector<Pacjent> p,
 
     if (t) {
         std::cout << "Login: " << p[i].login << std::endl
-                  << "Nazwisko: " << p[i].nazwisko << std::endl
-                  << "Data ostatniego szczepienia: " << p[i].daty.back().dzien
-                  << "." << p[i].daty.back().miesiac << "."
-                  << p[i].daty.back().rok << std::endl;
+                  << "Nazwisko: " << p[i].nazwisko << std::endl;
+        if (p[i].daty.back().dzien == 1 && p[i].daty.back().miesiac == 1
+            && p[i].daty.back().rok == 1) {
+            std::cout << "Data ostatniego szczepienia: Brak danych"
+                      << std::endl;
+            p[i].daty.clear();
+        } else {
+            std::cout
+                << "Data ostatniego szczepienia: " << p[i].daty.back().dzien
+                << "." << p[i].daty.back().miesiac << "."
+                << p[i].daty.back().rok << std::endl;
+        }
+
+        std::cout << std::endl;
+
 
         while (a != 5) {
             std::cout << "Co chcesz zrobic?\n 1 - pokaz daty moich szczepien, "
                          "2 - sprawdz czy moge sie zaszczepic"
                          ", 3 - zaszczep, 4 - sprawdz waznosc certyfikatu, 5 - "
-                         "wyloguj,"  // 0 - wyjdz"
+                         "wyloguj"
                       << std::endl;
             std::cin >> a;
 
             switch (a) {
             case 1:
                 wypisz(p[i].daty);
+                std::cout << std::endl;
                 break;
 
             case 2:
@@ -247,8 +258,13 @@ void zaloguj(std::vector<Pacjent> p,
                 std::cout << std::endl;
 
                 daty2.push_back({x, y, z});
-                czyMoge(p[i].daty, daty2);
+                if (czyMoge(p[i].daty, daty2)) {
+                    std::cout << "Mozesz sie zaszczepic" << std::endl;
+                } else {
+                    std::cout << "Nie mozesz sie zaszczepic" << std::endl;
+                }
 
+                std::cout << std::endl;
                 daty2.clear();
                 break;
 
@@ -272,6 +288,7 @@ void zaloguj(std::vector<Pacjent> p,
                               << std::endl;
                 }
 
+                std::cout << std::endl;
                 daty2.clear();
                 break;
 
@@ -289,28 +306,24 @@ void zaloguj(std::vector<Pacjent> p,
 
                 daty2.push_back({x, y, z});
                 czyWaznyCertyfikat(p[i].daty, daty2);
-
+                std::cout << std::endl;
                 daty2.clear();
                 break;
-                /*
-                            case 5:
-                                wyloguj();
-                                break;
-                */
             }
         }
 
     } else {
         std::cout << "Nie instnieje uzytkownik o podanych danych" << std::endl;
+        std::cout << std::endl;
     }
 }
 
-int main()
+auto main() -> int
 {
     int a;
     std::string lg, hs, naz;
-    std::vector<Pacjent> p;
-
+    auto d = std::vector<Data>{{1, 1, 1}};
+    auto p = std::vector<Pacjent>{{"0", "0", "0", d}};
 
     while (a != 0) {
         std::cout << "Co chcesz zrobic?\n 1 - zaloguj, 2 - zarejestruj,  0 - "
@@ -342,7 +355,7 @@ int main()
             std::cin >> hs;
             std::cout << std::endl;
 
-            rejestruj(p, naz, lg, hs);
+            rejestruj(p, lg, hs, naz, d);
             std::cout << std::endl;
             break;
         }
